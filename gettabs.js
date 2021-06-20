@@ -43,6 +43,27 @@ export async function right({ index }) {
 }
 
 
+/* Time-based commands */
+
+const ONE_MINUTE = 60E3;
+const FIVE_MINS = ONE_MINUTE * 5;
+const ONE_HOUR = ONE_MINUTE * 60;
+
+export function accessedLast5Mins() {
+    return accessedInTimeAmount(FIVE_MINS);
+}
+
+export function accessedLastHour() {
+    return accessedInTimeAmount(ONE_HOUR);
+}
+
+async function accessedInTimeAmount(timeAmount) {
+    const time = Date.now() - timeAmount;
+    return (await queryTabs()).filter(tab => tab.lastAccessed >= time);
+}
+
+
+
 /* Tab-tree commands */
 
 export async function descendants(tab) {
